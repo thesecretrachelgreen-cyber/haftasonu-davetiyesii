@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hafta Sonu Daveti</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #3a2b1f, #120d08 60%);
+      overflow: hidden;
+    }
+
+    .card {
+      background: #fffaf4;
+      width: 380px;
+      padding: 26px;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+      text-align: center;
+      animation: fadeIn 1s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 { font-size: 22px; margin-bottom: 12px; color:#3a2b1f; }
+    p { font-size: 15px; line-height: 1.6; color:#3a2b1f; }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 18px;
+      border-radius: 25px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      background: #7a4a1f;
+      color: white;
+      transition: transform .2s, opacity .2s;
+    }
+
+    button:hover { transform: scale(1.05); }
+    .muted { opacity: .4; background:#999; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .answers {
+      background:#f3e6d8;
+      border-radius:14px;
+      padding:14px;
+      margin-top:16px;
+      font-size:14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card" id="app"></div>
+
+<script>
+  const app = document.getElementById('app');
+  let answers = {};
+
+  start();
+
+  function start() {
+    app.innerHTML = `
+      <h1>☕ Gül'e Özel Davet</h1>
+      <p>Hafta sonu için küçük ama tatlı bir plan var.</p>
+      <button onclick="openInvite()">📩 Daveti Aç</button>
+    `;
+  }
+
+  function openInvite() {
+    app.innerHTML = `
+      <h1>Hafta Sonu Davetiyesi</h1>
+      <p>Bu hafta sonu için<br><strong>kahveyle başlayıp</strong><br>yemekle devam eden<br>keyifli bir buluşmaya davetlisin.</p>
+      <p>👭 Katılımcılar:<br><strong>Esra, Gül & Sümeyra</strong></p>
+      <p>Dışarıda, güzel bir ortamda.</p>
+      <p>Katılmak ister misin?</p>
+      <button onclick="question1()">☕ Evet</button><br>
+      <button class="muted">🙃 Başka zaman</button>
+    `;
+  }
+
+  function question1() {
+    app.innerHTML = `
+      <h1>1️⃣ Soru</h1>
+      <p>Böyle bir hafta sonu planında senin modun hangisi?</p>
+      <button onclick="saveAnswer('Mod','Kahve & sohbet')">☕ Kahve & sohbet</button><br>
+      <button onclick="saveAnswer('Mod','Güzel bir yemek')">🍽️ Güzel bir yemek</button><br>
+      <button onclick="saveAnswer('Mod','Yürüyüş')">🚶‍♀️ Yürüyüş</button><br>
+      <button onclick="saveAnswer('Mod','Hepsi ama sakin')">😌 Hepsi ama sakin</button>
+    `;
+  }
+
+  function question2() {
+    app.innerHTML = `
+      <h1>2️⃣ Soru</h1>
+      <p>Bu buluşmada seni en çok ne mutlu eder?</p>
+      <button onclick="saveAnswer('Mutluluk','Bol sohbet')">🗨️ Bol sohbet</button><br>
+      <button onclick="saveAnswer('Mutluluk','Kahkaha')">😂 Kahkaha</button><br>
+      <button onclick="saveAnswer('Mutluluk','Tatlı mola')">🍰 Tatlı bir mola</button><br>
+      <button onclick="saveAnswer('Mutluluk','Anı biriktirmek')">📸 Anı biriktirmek</button>
+    `;
+  }
+
+  function question3() {
+    app.innerHTML = `
+      <h1>3️⃣ Soru</h1>
+      <p>Bu planı sen nasıl hayal ediyorsun?</p>
+      <button onclick="saveAnswer('Akış','Spontane')">✨ Spontane</button><br>
+      <button onclick="saveAnswer('Akış','Rahat ama planlı')">🕰️ Rahat ama planlı</button><br>
+      <button onclick="saveAnswer('Akış','Sohbet ağırlıklı')">💬 Sohbet ağırlıklı</button><br>
+      <button onclick="saveAnswer('Akış','Yemek odaklı')">🍽️ Yemek odaklı</button>
+    `;
+  }
+
+  function saveAnswer(key, value) {
+    answers[key] = value;
+    if (Object.keys(answers).length === 1) question2();
+    else if (Object.keys(answers).length === 2) question3();
+    else results();
+  }
+
+  function results() {
+    app.innerHTML = `<p>Plan netleşiyor… ☕🍽️✨</p>`;
+    setTimeout(finalScreen, 1200);
+  }
+
+  function finalScreen() {
+    app.innerHTML = `
+      <h1>🎉 Harika!</h1>
+      <p>Hafta sonu buluşması<br><strong>resmileşti.</strong></p>
+      <p>👭 Katılımcılar:<br><strong>Esra, Gül & Sümeyra</strong></p>
+
+      <div class="answers">
+        <strong>Plan tercihin:</strong><br>
+        ☕ Mod: ${answers['Mod']}<br>
+        😊 Mutluluk: ${answers['Mutluluk']}<br>
+        ✨ Akış: ${answers['Akış']}
+      </div>
+
+      <button onclick="accept()">☕ Katılıyorum</button>
+    `;
+  }
+
+  function accept() {
+    app.innerHTML = `
+      <h1>❤️</h1>
+      <p><strong>Plan kalbime kaydedildi.</strong></p>
+      <p><em>Bu planın kesinleşmesi için,<br>bu ekranın görüntüsünü plan yetkilisine iletmeniz rica olunur.</em></p>
+    `;
+  }
+</script>
+
+</body>
+</html>
